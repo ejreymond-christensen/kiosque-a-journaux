@@ -4,6 +4,10 @@ body{
 nav{
   background-color: #0c0c0c;
 }
+.btnImg{
+  height: 14px;
+  width: auto;
+}
 .jumbotron{
   background-image: url('../images/kiosque.jpg');
   background-repeat: no-repeat;
@@ -30,8 +34,9 @@ nav{
   -moz-box-shadow: 4px 3px 12px 0px rgba(133,133,133,1);
   box-shadow: 4px 3px 12px 0px rgba(133,133,133,1);
 }
-.saveArt{
+.saveArt, .deleteArt, .notesArt{
   float: right;
+  margin: 0 5px;
 }
 
 @media screen and (min-width: 675px){

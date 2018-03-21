@@ -1,0 +1,46 @@
+//Dependencies
+var express = require("express");
+var bodyParser = require("body-parser");
+var logger = require("morgan");
+var mongoose = require("mongoose");
+
+var cheerio = require("cheerio");
+var request = require("request");
+
+// Sets up the Express App
+var app = express();
+var PORT = process.env.PORT || 3000;
+
+// Requiring our models for syncing
+var db = require("./models");
+
+// Use morgan logger for logging requests
+app.use(logger("dev"));
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));
+// parse application/json
+app.use(bodyParser.json());
+
+// Static directory
+app.use(express.static(__dirname + '/public'));
+
+// Connect to the Mongo DB
+mongoose.Promise = Promise;
+mongoose.connect("mongodb://localhost/kiosque", {
+  useMongoClient: true
+});
+
+// Sets up the handlebars
+var exphbs = require("express-handlebars");
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
+
+require("./routing/html-routing.js")(app);
+require("./routing/api-routing.js")(app);
+
+
+// Starts Server
+app.listen(PORT, function() {
+  console.log("App running on port " + PORT + "!");
+});
