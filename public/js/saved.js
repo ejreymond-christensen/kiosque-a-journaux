@@ -44,8 +44,8 @@ $(document).on('click', '.notesArt', function(event){
     method: "GET",
     url: "/targetarticle/" + id
   }).then(function(data){
-    var note = "no current notes";
-    if (data.note) {
+    var note = "No Current Notes Available";
+    if (data.note && data.note.note != "") {
       note= data.note.note;
     }
     var title= data.title;
@@ -57,7 +57,7 @@ $(document).on('click', '.notesArt', function(event){
 
 $('.subNote').on('click', function(event){
   event.preventDefault();
-  var note = $('#note-text').val();
+  var note = $('#note-text').val().trim();
   var id = $('.subNote').attr('data-id');
   $('#note-text').val("");
   $.ajax({
@@ -67,6 +67,28 @@ $('.subNote').on('click', function(event){
       note: note
     }
   }).then(function(data){
+    var note= data.note.note;
+    if (data.note.note === "") {
+      note= "No Current Notes Available";
+    }
+    var title= data.title;
+    var id= data._id;
+    loadModal(title, id, note);
+  });
+});
+
+$('.deleteNote').on('click', function(event){
+  event.preventDefault();
+  var note = $('#note-text').val();
+  var id = $('.subNote').attr('data-id');
+  $('#note-text').val("");
+  $.ajax({
+    method: "POST",
+    url: "/articlesave/" + id,
+    data: {
+      note: "No Current Notes Available"
+    }
+  }).then(function(data){
     console.log(data);
     var note= data.note.note;
     var title= data.title;
@@ -74,5 +96,4 @@ $('.subNote').on('click', function(event){
     loadModal(title, id, note);
   });
 });
-
 onload();
