@@ -120,7 +120,7 @@ module.exports = function(app) {
 
   app.get("/savedArticles", function(req, res) {
 
-    db.Articles.find({saved: true})
+    db.Articles.find({saved: true}).populate("note")
       .then(function(dbArticle) {
 
         res.json(dbArticle);
@@ -133,6 +133,7 @@ module.exports = function(app) {
 
   app.post("/articles/:id", function(req, res){
     db.Articles.findOneAndUpdate({ _id: req.params.id }, { $set: { saved: req.body.saved }})
+
     .then(function(dbArticle) {
       res.send(dbArticle);
     })
@@ -140,4 +141,34 @@ module.exports = function(app) {
       res.json(err);
     });
   });
+
+  app.post("/articlesave/:id", function(req, res){
+    db.Note.create(req.body)
+      .then(function(dbNote) {
+
+        return db.Articles.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true }).populate("note");
+      })
+      .then(function(dbArticle) {
+
+        res.send(dbArticle);
+      })
+      .catch(function(err) {
+
+        res.json(err);
+      });
+  });
+
+  app.get("/targetarticle/:id", function(req, res) {
+
+    db.Articles.findOne({_id: req.params.id}).populate("note")
+      .then(function(dbArticle) {
+
+        res.send(dbArticle);
+      })
+      .catch(function(err) {
+
+        res.json(err);
+      });
+  });
+
 };

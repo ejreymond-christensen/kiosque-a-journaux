@@ -16,27 +16,63 @@ var onload = function(){
 };
 
 $(document).on('click', ".deleteArt" , function() {
-     var id = $(this).attr("data-id");
-     $.ajax({
-       method: "POST",
-       url: "/articles/" + id,
-       data: {
-         saved: 0
-       }
-     }).then(function(data){
-       onload();
-     });
+   var id = $(this).attr("data-id");
+   $.ajax({
+     method: "POST",
+     url: "/articles/" + id,
+     data: {
+       saved: 0
+     }
+   }).then(function(data){
+     onload();
+   });
 });
+
+var loadModal = function(title, id, note){
+  $('.modal-title').empty();
+  $('.noteDisplay').empty();
+  $('.modal-title').text(title);
+  $('.subNote').attr('data-id',id);
+  $('.noteDisplay').text(note);
+  $('.noteModal').modal('show');
+};
 
 $(document).on('click', '.notesArt', function(event){
   event.preventDefault();
-  var title= $(this).attr("data-title");
   var id= $(this).attr("data-id");
-  $('.modal-title').empty();
-  $('.modal-title').text(title);
-  $('.subNote').attr('data-id',id);
-  $('.noteModal').modal('show');
+  $.ajax({
+    method: "GET",
+    url: "/targetarticle/" + id
+  }).then(function(data){
+    var note = "no current notes";
+    if (data.note) {
+      note= data.note.note;
+    }
+    var title= data.title;
+    var idNew= data._id;
+    console.log(idNew);
+    loadModal(title, idNew, note);
+  });
 });
 
+$('.subNote').on('click', function(event){
+  event.preventDefault();
+  var note = $('#note-text').val();
+  var id = $('.subNote').attr('data-id');
+  $('#note-text').val("");
+  $.ajax({
+    method: "POST",
+    url: "/articlesave/" + id,
+    data: {
+      note: note
+    }
+  }).then(function(data){
+    console.log(data);
+    var note= data.note.note;
+    var title= data.title;
+    var id= data._id;
+    loadModal(title, id, note);
+  });
+});
 
 onload();
