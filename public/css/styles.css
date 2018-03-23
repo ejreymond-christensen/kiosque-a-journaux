@@ -8,6 +8,9 @@ nav{
   height: 14px;
   width: auto;
 }
+.scrapers{
+  min-width: 277px;
+}
 .jumbotron{
   background-image: url('../images/kiosque.jpg');
   background-repeat: no-repeat;
