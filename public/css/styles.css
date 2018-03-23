@@ -7,9 +7,10 @@ nav{
 .btnImg{
   height: 14px;
   width: auto;
+  min-width: 93px;
 }
 .scrapers{
-  min-width: 277px;
+  min-width: 279px;
 }
 .jumbotron{
   background-image: url('../images/kiosque.jpg');
