@@ -11,15 +11,6 @@ nav{
 .scrapers{
   min-width: 276px;
 }
-#btnLeMonde{
-  min-width: 66px;
-}
-#btnFigaro{
-  min-width: 81px;
-}
-#btnObs{
-  min-width: 53px;
-}
 .jumbotron{
   background-image: url('../images/kiosque.jpg');
   background-repeat: no-repeat;
