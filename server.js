@@ -12,7 +12,9 @@ var app = express();
 var PORT = process.env.PORT || 3000;
 
 // Requiring our models for syncing
-var db = require("./models");
+// var db = require("./models");
+
+var db = mongoose.connection;
 
 // Use morgan logger for logging requests
 app.use(logger("dev"));
@@ -23,8 +25,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // Static directory
-app.use(express.static(__dirname + '/public'));
+app.use(express.static('public'));
 
+var databaseUri = 'mongodb://localhost/kiosque';
+if (process.env.MONGODB_URI){
+  mongoose.connect(process.env.MONGODB_URI);
+}else{
+  mongoose.connect(databaseUri);
+}
 // Connect to the Mongo DB
 mongoose.Promise = Promise;
 mongoose.connect("mongodb://localhost/kiosque", {
@@ -39,7 +47,13 @@ app.set("view engine", "handlebars");
 require("./routing/html-routing.js")(app);
 require("./routing/api-routing.js")(app);
 
+db.on('error', function(err){
+  console.log('Mongoose Error: ', err);
+});
 
+db.once('open', function(){
+  console.log('Mongoose connection successful');
+});
 // Starts Server
 app.listen(PORT, function() {
   console.log("App running on port " + PORT + "!");
