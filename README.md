@@ -1,5 +1,5 @@
 # kiosque-a-journaux
-news scrapper that lets users collect and comment on articles from Nouvel Obs, Le Monde and Le Figaro using Mongo/Mongoose, Cheerio, Express and HandleBars.
+News scrapper that lets users collect and comment on articles from Nouvel Obs, Le Monde and Le Figaro using Mongo/Mongoose, Cheerio, Express and HandleBars.
 
 ### Kiosque à Journaux
 This is a web app that lets users view and leave comments on the latest news from Nouvel Obs, Le Monde and Le Figaro. 
